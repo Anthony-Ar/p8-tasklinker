@@ -46,9 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $contratStartDate = null;
 
-    #[ORM\Column]
-    private ?bool $active = null;
-
     /**
      * @var Collection<int, Project>
      */
@@ -186,18 +183,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setContratStartDate(\DateTimeInterface $contratStartDate): static
     {
         $this->contratStartDate = $contratStartDate;
-
-        return $this;
-    }
-
-    public function isActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): static
-    {
-        $this->active = $active;
 
         return $this;
     }
