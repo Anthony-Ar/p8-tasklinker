@@ -21,10 +21,8 @@ help: ## Outputs this help screen
 build: ## Builds the Docker images
 	@$(DOCKER_COMP) build --pull --no-cache
 
-up: ## Start the docker hub without TLS certificate
-	@$(DOCKER_COMP) SERVER_NAME=http://localhost \
-	@$(DOCKER_COMP) MERCURE_PUBLIC_URL=http://localhost/.well-known/mercure \
-	@$(DOCKER_COMP) docker compose up
+up: ## Start the docker hub
+	@$(DOCKER_COMP) docker compose up --remove-orphans
 
 up --tls:
 	@$(DOCKER_COMP) up
@@ -63,3 +61,20 @@ sf: ## List all Symfony commands or pass the parameter "c=" to run a given comma
 
 cc: c=c:c ## Clear the cache
 cc: sf
+
+
+## —— Custom Symfony Commands 🤖 ———————————————————————————————————————————————————————————————
+migration: ## Génère le fichier de migration Symfony
+	@$(SYMFONY) make:migration
+
+domimi: ## Éxécute toutes les migrations en attente
+	@$(SYMFONY) do:mi:mi
+
+dfl: ## Chargement des DataFixtures présentes sur l'application
+	@$(SYMFONY) d:f:l
+
+form: ## Génère un FormType
+	@$(SYMFONY) make:form
+
+entity: ## Génère une Entity
+	@$(SYMFONY) make:entity
