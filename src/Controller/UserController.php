@@ -13,10 +13,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class UserController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)
-    {}
+    {
+    }
 
     #[Route('/user', name: 'app_users_show')]
-    public function showUsers(): Response
+    public function showUsers() : Response
     {
         return $this->render('pages/user/show.html.twig', [
             'users' => $this->entityManager->getRepository(User::class)->findAll(),
@@ -24,7 +25,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/user/{id}', name: 'app_user_edit')]
-    public function editUser(Request $request, int $id): Response
+    public function editUser(Request $request, int $id) : Response
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
 
@@ -46,5 +47,20 @@ final class UserController extends AbstractController
             'user' => $user,
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/user/{id}/delete', name: 'app_user_delete')]
+    public function deleteUser(int $id) : Response
+    {
+        $user = $this->entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            return $this->redirectToRoute('app_users_show');
+        }
+
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_users_show');
     }
 }
