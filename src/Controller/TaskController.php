@@ -22,13 +22,13 @@ final class TaskController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/project/{id}/add-task', name: 'app_add_task')]
+    #[Route('/project/{id}/add-task', name: 'app_task_add')]
     public function addTask(Request $request, int $id): Response
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
         if (!$project || !$project->isActive()) {
-            return $this->redirectToRoute('app_show_projects');
+            return $this->redirectToRoute('app_projects_show');
         }
 
         $task = new Task();
@@ -41,7 +41,7 @@ final class TaskController extends AbstractController
             $this->entityManager->persist($task);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_show_project', ['id' => $project->getId()]);
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
         return $this->render('pages/task/add.html.twig', [
@@ -55,13 +55,13 @@ final class TaskController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/task/edit/{id}', name: 'app_edit_task')]
+    #[Route('/task/edit/{id}', name: 'app_task_edit')]
     public function editTask(Request $request, int $id): Response
     {
         $task = $this->entityManager->getRepository(Task::class)->find($id);
 
         if (!$task) {
-            return $this->redirectToRoute('app_show_projects');
+            return $this->redirectToRoute('app_projects_show');
         }
 
         $project = $task->getProject();
@@ -73,7 +73,7 @@ final class TaskController extends AbstractController
             $this->entityManager->persist($task);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_show_project', ['id' => $project->getId()]);
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
         return $this->render('pages/task/edit.html.twig', [
@@ -87,7 +87,7 @@ final class TaskController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/task/{id}/delete', name: 'app_delete_task')]
+    #[Route('/task/{id}/delete', name: 'app_task_delete')]
     public function deleteTask(int $id): Response
     {
         $task = $this->entityManager->getRepository(Task::class)->find($id);
@@ -98,9 +98,9 @@ final class TaskController extends AbstractController
             $this->entityManager->remove($task);
             $this->entityManager->flush();
 
-            $this->redirectToRoute('app_show_project', ['id' => $project]);
+            return $this->redirectToRoute('app_project_show', ['id' => $project]);
         }
 
-        return $this->redirectToRoute('app_show_projects');
+        return $this->redirectToRoute('app_projects_show');
     }
 }

@@ -20,7 +20,7 @@ final class ProjectController extends AbstractController
      * Affiche la liste des projets
      * @return Response
      */
-    #[Route('/', name: 'app_show_projects')]
+    #[Route('/', name: 'app_projects_show')]
     public function showProjects(): Response
     {
         return $this->render('pages/project/show.html.twig', [
@@ -33,13 +33,13 @@ final class ProjectController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/project/{id}', name: 'app_show_project', requirements: ['id' => '\d+'])]
+    #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'])]
     public function showProject(int $id): Response
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
         if (!$project || !$project->isActive()) {
-            return $this->redirectToRoute('app_show_projects');
+            return $this->redirectToRoute('app_projects_show');
         }
 
         return $this->render('pages/project/show_detail.html.twig', [
@@ -53,7 +53,7 @@ final class ProjectController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/project/add', name: 'app_add_project')]
+    #[Route('/project/add', name: 'app_project_add')]
     public function addProject(Request $request): Response
     {
         $project = new Project();
@@ -65,7 +65,7 @@ final class ProjectController extends AbstractController
             $this->entityManager->persist($project);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_show_project', ['id' => $project->getId()]);
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
         return $this->render('pages/project/add.html.twig', [
@@ -79,13 +79,13 @@ final class ProjectController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/project/{id}/edit', name: 'app_edit_project')]
+    #[Route('/project/{id}/edit', name: 'app_project_edit')]
     public function editProject(Request $request, int $id): Response
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
         if(!$project || !$project->isActive()) {
-            return $this->redirectToRoute('app_show_projects');
+            return $this->redirectToRoute('app_projects_show');
         }
 
         $form = $this->createForm(ProjectType::class, $project);
@@ -95,7 +95,7 @@ final class ProjectController extends AbstractController
             $this->entityManager->persist($project);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_show_project', ['id' => $project->getId()]);
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
         return $this->render('pages/project/edit.html.twig', [
@@ -109,7 +109,7 @@ final class ProjectController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/project/{id}/delete', name: 'app_delete_project')]
+    #[Route('/project/{id}/delete', name: 'app_project_delete')]
     public function deleteProject(int $id): Response
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
@@ -124,6 +124,6 @@ final class ProjectController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_show_projects');
+        return $this->redirectToRoute('app_projects_show');
     }
 }

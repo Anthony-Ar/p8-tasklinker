@@ -20,6 +20,6 @@
     <br>
 
     <button class="button button-submit">Modifier</button>
-    <a href="{{ path('app_delete_task', {id: task.id}) }}" class="delete-task" onclick="return confirm('Confirmez cette action');">Supprimer la tâche</a>
+    <a href="{{ path('app_task_delete', {id: task.id}) }}" class="delete-task" onclick="return confirm('Confirmez cette action');">Supprimer la tâche</a>
     {{ form_end(form) }}
 {% endblock %}

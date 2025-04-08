@@ -10,7 +10,7 @@
                 <div class="avatar">{{ user.firstname|first }}{{ user.lastname|first }}</div>
             {% endfor %}
         </div>
-        <a class="button" href="{{ path('app_edit_project', {id: project.id}) }}">Modifier</a>
+        <a class="button" href="{{ path('app_project_edit', {id: project.id}) }}">Modifier</a>
     </div>
 {% endblock %}
 
@@ -21,7 +21,7 @@
                 <h2>{{ statut.name }}</h2>
                 <div class="tasks-list">
                     {% for task in project.tasks|filter(task => task.status == statut) %}
-                    <a class="task" href="{{ path('app_edit_task', {id: task.id}) }}">
+                    <a class="task" href="{{ path('app_task_edit', {id: task.id}) }}">
                         <h3>{{ task.name }}</h3>
                         <p>{{ task.description }}</p>
                         {% if task.user or task.deadline %}
@@ -40,7 +40,7 @@
                         {% endif %}
                     </a>
                     {% endfor %}
-                    <a href="{{ path('app_add_task', {id: project.id}) }}" class="task-add">
+                    <a href="{{ path('app_task_add', {id: project.id}) }}" class="task-add">
                         + Ajouter une tâche
                     </a>
                 </div>
