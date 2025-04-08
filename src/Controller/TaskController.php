@@ -16,6 +16,12 @@ final class TaskController extends AbstractController
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {}
 
+    /**
+     * Ajoute une nouvelle tâche à un projet
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
     #[Route('/project/{id}/add-task', name: 'app_add_task')]
     public function addTask(Request $request, int $id): Response
     {
@@ -43,6 +49,12 @@ final class TaskController extends AbstractController
         ]);
     }
 
+    /**
+     * Modification d'une tâche existante
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
     #[Route('/task/edit/{id}', name: 'app_edit_task')]
     public function editTask(Request $request, int $id): Response
     {
@@ -68,5 +80,27 @@ final class TaskController extends AbstractController
             'task' => $task,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Supprime une tâche existante
+     * @param int $id
+     * @return Response
+     */
+    #[Route('/task/{id}/delete', name: 'app_delete_task')]
+    public function deleteTask(int $id): Response
+    {
+        $task = $this->entityManager->getRepository(Task::class)->find($id);
+
+        if($task) {
+            $project = $task->getProject()->getId();
+
+            $this->entityManager->remove($task);
+            $this->entityManager->flush();
+
+            $this->redirectToRoute('app_show_project', ['id' => $project]);
+        }
+
+        return $this->redirectToRoute('app_show_projects');
     }
 }
