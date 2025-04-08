@@ -22,10 +22,11 @@ build: ## Builds the Docker images
 	@$(DOCKER_COMP) build --pull --no-cache
 
 up: ## Start the docker hub
-	@$(DOCKER_COMP) docker compose up --remove-orphans
+	@$(DOCKER_COMP) up --remove-orphans
 
 up --tls:
 	@$(DOCKER_COMP) up
+
 start: build up ## Build and start the containers
 
 down: ## Stop the docker hub
