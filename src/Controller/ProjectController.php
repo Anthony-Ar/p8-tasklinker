@@ -83,4 +83,17 @@ final class ProjectController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/project/{id}/delete', name: 'app_delete_project')]
+    public function deleteProject(int $id): Response
+    {
+        $project = $this->entityManager->getRepository(Project::class)->find($id);
+
+        if($project) {
+            $this->entityManager->remove($project);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_show_projects');
+    }
 }
