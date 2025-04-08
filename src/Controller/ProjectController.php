@@ -90,7 +90,12 @@ final class ProjectController extends AbstractController
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
         if($project) {
-            $this->entityManager->remove($project);
+//            $this->entityManager->remove($project);
+//            $this->entityManager->flush();
+
+            // Soft delete
+            $project->setActive(false);
+            $this->entityManager->persist($project);
             $this->entityManager->flush();
         }
 
