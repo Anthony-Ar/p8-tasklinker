@@ -69,7 +69,7 @@ class Task
         return $this->deadline;
     }
 
-    public function setDeadline(\DateTimeInterface $deadline): static
+    public function setDeadline(?\DateTimeInterface $deadline): static
     {
         $this->deadline = $deadline;
 
