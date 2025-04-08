@@ -29,7 +29,7 @@ final class ProjectController extends AbstractController
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
-        if (!$project) {
+        if (!$project || !$project->isActive()) {
             return $this->redirectToRoute('app_show_projects');
         }
 
@@ -64,7 +64,7 @@ final class ProjectController extends AbstractController
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
-        if(!$project) {
+        if(!$project || !$project->isActive()) {
             return $this->redirectToRoute('app_show_projects');
         }
 
