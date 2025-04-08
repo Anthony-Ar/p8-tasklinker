@@ -16,6 +16,10 @@ final class ProjectController extends AbstractController
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {}
 
+    /**
+     * Affiche la liste des projets
+     * @return Response
+     */
     #[Route('/', name: 'app_show_projects')]
     public function showProjects(): Response
     {
@@ -24,6 +28,11 @@ final class ProjectController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche le détail d'un projet
+     * @param int $id
+     * @return Response
+     */
     #[Route('/project/{id}', name: 'app_show_project', requirements: ['id' => '\d+'])]
     public function showProject(int $id): Response
     {
@@ -39,6 +48,11 @@ final class ProjectController extends AbstractController
         ]);
     }
 
+    /**
+     * Ajoute un nouveau projet à la base de données
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/project/add', name: 'app_add_project')]
     public function addProject(Request $request): Response
     {
@@ -59,6 +73,12 @@ final class ProjectController extends AbstractController
         ]);
     }
 
+    /**
+     * Modifie un projet existant
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
     #[Route('/project/{id}/edit', name: 'app_edit_project')]
     public function editProject(Request $request, int $id): Response
     {
@@ -84,6 +104,11 @@ final class ProjectController extends AbstractController
         ]);
     }
 
+    /**
+     * Soft delete un projet existant
+     * @param int $id
+     * @return Response
+     */
     #[Route('/project/{id}/delete', name: 'app_delete_project')]
     public function deleteProject(int $id): Response
     {
