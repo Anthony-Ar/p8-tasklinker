@@ -58,4 +58,29 @@ final class ProjectController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/project/{id}/edit', name: 'app_edit_project')]
+    public function editProject(Request $request, int $id): Response
+    {
+        $project = $this->entityManager->getRepository(Project::class)->find($id);
+
+        if(!$project) {
+            return $this->redirectToRoute('app_show_projects');
+        }
+
+        $form = $this->createForm(ProjectType::class, $project);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($project);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_show_project', ['id' => $project->getId()]);
+        }
+
+        return $this->render('pages/project/edit.html.twig', [
+            'project' => $project,
+            'form' => $form->createView()
+        ]);
+    }
 }
